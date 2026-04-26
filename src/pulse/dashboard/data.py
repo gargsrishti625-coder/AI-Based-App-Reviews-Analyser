@@ -6,13 +6,15 @@ the full pipeline stack — keeps the dashboard import footprint small.
 from __future__ import annotations
 
 import json
+import os
 import sqlite3
 import statistics
 from pathlib import Path
 
 
 def get_pulse_root() -> Path:
-    """Project root — two levels up from this file (src/pulse/dashboard/)."""
+    if override := os.environ.get("PULSE_ROOT"):
+        return Path(override)
     return Path(__file__).parent.parent.parent.parent
 
 

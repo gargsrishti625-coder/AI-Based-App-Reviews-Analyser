@@ -21,6 +21,7 @@ from pulse.phase_0.config.loader import load_config
 from pulse.phase_0.core.exceptions import PhaseFailure
 from pulse.phase_0.core.runplan import bootstrap, last_completed_iso_week_ist
 from pulse.phase_0.obs import logger as obs
+from pulse.util.paths import get_pulse_dir
 from pulse.phase_7 import AuditStore
 from pulse.scheduler.pipeline import PipelineOutcome, execute_pipeline
 
@@ -95,7 +96,7 @@ def main(argv: list[str] | None = None) -> int:
         err=True,
     )
 
-    audit_db = Path(".pulse") / "audit.db"
+    audit_db = get_pulse_dir() / "audit.db"
     audit_store = AuditStore(audit_db)
     audit_store.migrate()
 

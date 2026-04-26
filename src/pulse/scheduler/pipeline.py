@@ -18,6 +18,8 @@ from pathlib import Path
 from typing import Literal
 from uuid import UUID
 
+from pulse.util.paths import get_pulse_dir
+
 import typer
 
 from pulse.phase_0.core.exceptions import PhaseFailure
@@ -64,7 +66,7 @@ class PipelineOutcome:
 
 
 def _run_dir(run_id: str) -> Path:
-    d = Path(".pulse") / "runs" / run_id
+    d = get_pulse_dir() / "runs" / run_id
     d.mkdir(parents=True, exist_ok=True)
     return d
 

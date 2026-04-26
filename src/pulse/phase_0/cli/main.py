@@ -16,6 +16,7 @@ from pulse.phase_0.core.runplan import (
     parse_iso_week,
 )
 from pulse.phase_0.obs import logger as obs
+from pulse.util.paths import get_pulse_dir
 
 app = typer.Typer(
     name="pulse",
@@ -52,7 +53,7 @@ def _resolve_config_path(config: Path | None) -> Path:
 
 def _run_dir(run_id: str) -> Path:
     """Return (and create) the per-run artifact directory."""
-    d = Path(".pulse") / "runs" / run_id
+    d = get_pulse_dir() / "runs" / run_id
     d.mkdir(parents=True, exist_ok=True)
     return d
 
@@ -149,7 +150,7 @@ def run(
     from pulse.phase_7 import AuditStore
     from pulse.scheduler.pipeline import execute_pipeline
 
-    audit_db = Path(".pulse") / "audit.db"
+    audit_db = get_pulse_dir() / "audit.db"
     audit_store = AuditStore(audit_db)
     audit_store.migrate()
 
@@ -243,7 +244,7 @@ def backfill(
     from pulse.phase_7 import AuditStore
     from pulse.scheduler.pipeline import execute_pipeline
 
-    audit_db = Path(".pulse") / "audit.db"
+    audit_db = get_pulse_dir() / "audit.db"
     audit_store = AuditStore(audit_db)
     audit_store.migrate()
 
@@ -741,7 +742,7 @@ def debug_deliver(
 
 
 def _audit_db() -> Path:
-    return Path(".pulse") / "audit.db"
+    return get_pulse_dir() / "audit.db"
 
 
 @audit_app.command("show")
