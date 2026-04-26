@@ -25,28 +25,3 @@ services:
       - key: GOOGLE_SERVICE_ACCOUNT_JSON
         sync: false
 
-  - type: cron
-    name: groww-pulse-weekly
-    runtime: python
-    buildCommand: pip install -e .
-    schedule: "30 0 * * 1"
-    startCommand: pulse run --product groww
-    disk:
-      name: pulse-data
-      mountPath: /data/pulse
-      sizeGB: 1
-    envVars:
-      - key: PULSE_ROOT
-        value: /data/pulse
-      - key: GROQ_API_KEY
-        sync: false
-      - key: OPENAI_API_KEY
-        sync: false
-      - key: PULSE_DOC_ID_GROWW
-        sync: false
-      - key: GOOGLE_DOCS_ENABLED
-        value: "true"
-      - key: GOOGLE_GMAIL_ENABLED
-        value: "true"
-      - key: GOOGLE_SERVICE_ACCOUNT_JSON
-        sync: false
