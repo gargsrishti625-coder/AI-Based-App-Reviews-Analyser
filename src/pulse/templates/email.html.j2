@@ -1,0 +1,15 @@
+<!doctype html>
+<html>
+<body style="font-family:system-ui,sans-serif;max-width:600px;margin:0 auto;padding:16px;">
+  <h2 style="margin:0 0 8px;font-size:18px;color:#1a1a1a;">{{ subject }}</h2>
+  <p style="margin:0 0 12px;color:#444;">This week's top themes:</p>
+  <ul style="margin:0 0 16px;padding-left:20px;">
+    {% for t in top_titles %}<li style="margin-bottom:4px;color:#222;">{{ t }}</li>
+    {% endfor %}
+  </ul>
+  <p style="margin:0 0 16px;">
+    <a href="{% raw %}{{PULSE_DEEP_LINK}}{% endraw %}" style="color:#1a73e8;text-decoration:none;">Read the full pulse →</a>
+  </p>
+  <p style="color:#888;font-size:12px;margin:0;border-top:1px solid #eee;padding-top:12px;">{{ footer_meta }}</p>
+</body>
+</html>

@@ -1,0 +1,28 @@
+pulse_env: staging
+window_weeks: 8
+n_min_reviews: 20
+llm_model: claude-sonnet-4-6
+embedding_model: text-embedding-3-small
+total_token_cap: 200000
+max_reviews_per_source: 500
+
+mcp:
+  docs_url: "http://localhost:8080/sse"
+  gmail_url: "http://localhost:8081/sse"
+  probe_timeout_seconds: 5.0
+  required_docs_tools:
+    - docs.get
+    - docs.batchUpdate
+  required_gmail_tools:
+    - gmail.messages.send
+    - gmail.drafts.create
+
+products:
+  groww:
+    slug: groww
+    display_name: Groww
+    app_store_id: "1404379703"
+    play_store_id: com.nextbillion.groww
+    pulse_doc_id: "STAGING_GOOGLE_DOC_ID"
+    email_recipients:
+      - team@example.com

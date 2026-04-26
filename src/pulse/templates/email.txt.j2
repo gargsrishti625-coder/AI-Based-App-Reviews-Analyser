@@ -1,0 +1,8 @@
+{{ subject }}
+
+This week's top themes:
+{% for t in top_titles %}- {{ t }}
+{% endfor %}
+Read the full pulse: {% raw %}{{PULSE_DEEP_LINK}}{% endraw %}
+
+{{ footer_meta }}

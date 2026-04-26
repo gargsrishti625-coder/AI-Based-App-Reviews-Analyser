@@ -1,0 +1,381 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>{{ display_name }} Pulse — Intelligence Dashboard</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --green-500:#00C896;
+    --green-600:#00B488;
+    --green-50:#E8F8F2;
+    --green-100:#D2F2E5;
+    --red-500:#FF6B6B;
+    --red-50:#FFE5E5;
+    --amber-500:#F59E0B;
+    --gray-900:#0a0a0a;
+    --gray-700:#374151;
+    --gray-600:#4b5563;
+    --gray-500:#6b7280;
+    --gray-400:#9ca3af;
+    --gray-200:#e5e7eb;
+    --gray-100:#f3f4f6;
+    --gray-50:#f9fafb;
+    --bg:#F5F7FA;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{font-family:'Inter',system-ui,-apple-system,sans-serif;background:var(--bg);color:var(--gray-900);min-height:100vh;-webkit-font-smoothing:antialiased}
+
+  /* ── Top nav ─────────────────────────────────────────────────────── */
+  .topbar{background:#fff;border-bottom:1px solid var(--gray-200);padding:14px 28px;display:flex;align-items:center;gap:36px;position:sticky;top:0;z-index:50}
+  .brand{font-size:18px;font-weight:800;letter-spacing:-0.4px}
+  .brand .green{color:var(--green-500)}
+  .nav{display:flex;gap:28px;align-items:center;flex:1}
+  .nav-link{font-size:14px;font-weight:500;color:var(--gray-500);text-decoration:none;padding-bottom:18px;margin-bottom:-18px;border-bottom:2px solid transparent}
+  .nav-link.active{color:var(--green-500);border-bottom-color:var(--green-500);font-weight:600}
+  .nav-link:hover:not(.active){color:var(--gray-700)}
+  .top-right{display:flex;align-items:center;gap:14px}
+  .live-badge{background:var(--gray-100);border-radius:24px;padding:7px 14px;font-size:12px;font-weight:600;color:var(--gray-700);display:inline-flex;align-items:center;gap:7px;letter-spacing:.4px;text-transform:uppercase}
+  .live-dot{width:8px;height:8px;border-radius:50%;background:var(--green-500);animation:pulse-dot 2s ease-in-out infinite}
+  @keyframes pulse-dot{0%,100%{opacity:1}50%{opacity:.4}}
+  .icon-btn{width:38px;height:38px;border-radius:50%;background:#fff;border:1px solid var(--gray-200);display:inline-flex;align-items:center;justify-content:center;cursor:pointer;color:var(--gray-600);font-size:16px;transition:background .15s}
+  .icon-btn:hover{background:var(--gray-50)}
+  .btn-primary{background:var(--green-500);color:#fff;border:none;padding:10px 22px;border-radius:10px;font-size:14px;font-weight:600;cursor:pointer;transition:background .15s;font-family:inherit}
+  .btn-primary:hover{background:var(--green-600)}
+  .btn-primary:disabled{opacity:.5;cursor:not-allowed}
+  .avatar{width:38px;height:38px;border-radius:50%;background:linear-gradient(135deg,#fbbf24,#f97316);display:inline-flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:14px;border:2px solid #fff;box-shadow:0 0 0 1px var(--gray-200)}
+
+  /* ── App grid ───────────────────────────────────────────────────── */
+  .app{display:grid;grid-template-columns:240px 1fr 340px;gap:24px;padding:24px 28px;max-width:1480px;margin:0 auto}
+
+  /* ── Sidebar ────────────────────────────────────────────────────── */
+  .sidebar{background:#fff;border:1px solid var(--gray-200);border-radius:14px;padding:20px;height:fit-content;position:sticky;top:84px}
+  .sidebar-brand{display:flex;align-items:center;gap:12px;padding-bottom:18px;margin-bottom:14px;border-bottom:1px solid var(--gray-100)}
+  .sidebar-icon{width:40px;height:40px;border-radius:10px;background:var(--green-50);display:inline-flex;align-items:center;justify-content:center;color:var(--green-500);font-weight:700;font-size:18px}
+  .sidebar-brand-text{display:flex;flex-direction:column}
+  .sidebar-brand-text strong{font-size:14px;font-weight:700;color:var(--gray-900)}
+  .sidebar-brand-text span{font-size:10px;font-weight:600;color:var(--gray-400);letter-spacing:.8px;text-transform:uppercase}
+  .nav-vert{display:flex;flex-direction:column;gap:2px;margin-bottom:18px}
+  .nav-vert a{display:flex;align-items:center;gap:12px;padding:10px 12px;border-radius:8px;font-size:14px;font-weight:500;color:var(--gray-600);text-decoration:none;transition:all .15s}
+  .nav-vert a:hover{background:var(--gray-50);color:var(--gray-900)}
+  .nav-vert a.active{background:var(--green-50);color:var(--green-500);font-weight:600}
+  .nav-vert a .ico{width:18px;display:inline-flex;justify-content:center}
+  .sidebar-cta{background:#fff;border:1px solid var(--gray-200);border-radius:10px;padding:12px 14px;display:flex;align-items:center;gap:10px;font-size:14px;font-weight:600;cursor:pointer;color:var(--gray-700);width:100%;text-decoration:none;transition:all .15s;margin-bottom:18px}
+  .sidebar-cta:hover{border-color:var(--green-500);color:var(--green-500)}
+  .sidebar-cta .red{color:#ef4444}
+  .help-link{display:flex;align-items:center;gap:10px;padding:10px 12px;font-size:14px;color:var(--gray-500);text-decoration:none}
+  .help-link:hover{color:var(--gray-900)}
+
+  /* ── Main column ────────────────────────────────────────────────── */
+  .main{min-width:0}
+  .page-head{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;margin-bottom:28px}
+  .page-title{font-size:34px;font-weight:800;letter-spacing:-0.8px;color:var(--gray-900);margin-bottom:6px;line-height:1.1}
+  .page-subtitle{font-size:14px;color:var(--gray-500)}
+  .period-pill{background:#fff;border:1px solid var(--gray-200);border-radius:24px;padding:8px 16px;font-size:12px;font-weight:600;color:var(--gray-700);white-space:nowrap;flex-shrink:0}
+
+  .section-row{display:flex;align-items:center;gap:12px;margin-bottom:20px}
+  .section-title{font-size:22px;font-weight:700;letter-spacing:-0.4px;color:var(--gray-900)}
+  .urgent-badge{background:var(--red-50);color:var(--red-500);font-size:11px;font-weight:700;padding:4px 12px;border-radius:24px;letter-spacing:.3px}
+
+  /* ── Theme card ─────────────────────────────────────────────────── */
+  .theme-card{background:#fff;border:1px solid var(--gray-200);border-radius:14px;padding:24px 26px;margin-bottom:16px;border-left:4px solid var(--green-500);position:relative;transition:box-shadow .15s}
+  .theme-card:hover{box-shadow:0 4px 16px rgba(0,0,0,.04)}
+  .theme-head{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;margin-bottom:8px}
+  .theme-title{font-size:18px;font-weight:700;letter-spacing:-0.2px;color:var(--gray-900)}
+  .priority-pill{font-size:10px;font-weight:700;padding:5px 12px;border-radius:24px;letter-spacing:.5px;text-transform:uppercase;flex-shrink:0}
+  .priority-pill.urgent{background:var(--red-50);color:var(--red-500)}
+  .priority-pill.high{background:var(--green-50);color:var(--green-500)}
+  .stars{display:flex;align-items:center;gap:6px;margin-bottom:18px;color:var(--amber-500);font-size:14px}
+  .stars .rating-num{color:var(--gray-700);font-size:13px;font-weight:600;margin-left:4px}
+  .quote-box{background:var(--gray-50);border-radius:10px;padding:18px 22px;font-size:14px;color:var(--gray-700);line-height:1.6;font-style:italic;position:relative;margin-bottom:16px}
+  .quote-box::before{content:'"';position:absolute;top:-8px;left:14px;font-size:42px;color:var(--green-500);font-style:normal;font-family:Georgia,serif;line-height:1;font-weight:700}
+  .theme-foot{display:flex;align-items:center;justify-content:space-between;gap:16px}
+  .avatar-row{display:flex;align-items:center}
+  .avatar-row .av{width:30px;height:30px;border-radius:50%;border:2px solid #fff;background:linear-gradient(135deg,#60a5fa,#3b82f6);margin-left:-10px;display:inline-flex;align-items:center;justify-content:center;color:#fff;font-size:11px;font-weight:600}
+  .avatar-row .av:first-child{margin-left:0}
+  .avatar-row .av.gray{background:var(--gray-100);color:var(--gray-600)}
+  .review-link{color:var(--green-500);font-size:13px;font-weight:600;text-decoration:none;cursor:pointer}
+  .review-link:hover{color:var(--green-600)}
+
+  /* ── Right panel ───────────────────────────────────────────────── */
+  .right{display:flex;flex-direction:column;gap:20px}
+  .stake-card{background:#fff;border:1px solid var(--gray-200);border-radius:14px;padding:24px}
+  .profile{display:flex;flex-direction:column;align-items:center;text-align:center;margin-bottom:20px}
+  .profile-avatar{width:96px;height:96px;border-radius:50%;background:linear-gradient(135deg,#fbbf24,#f97316);color:#fff;font-size:36px;font-weight:700;display:flex;align-items:center;justify-content:center;margin-bottom:14px;box-shadow:0 0 0 4px #fff,0 0 0 6px var(--green-500)}
+  .profile-name{font-size:18px;font-weight:700;color:var(--gray-900);margin-bottom:2px}
+  .profile-role{font-size:11px;font-weight:600;color:var(--gray-400);letter-spacing:.6px;text-transform:uppercase}
+  .stats-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:20px}
+  .stat{background:var(--gray-50);border-radius:10px;padding:12px 8px;text-align:center}
+  .stat-label{font-size:9px;font-weight:700;color:var(--gray-400);letter-spacing:.6px;text-transform:uppercase;margin-bottom:4px}
+  .stat-value{font-size:18px;font-weight:700;color:var(--gray-900)}
+  .stat-value.green{color:var(--green-500)}
+  .stat-value.red{color:var(--red-500)}
+
+  .pdf-card{display:flex;align-items:center;gap:14px;border:1px solid var(--gray-200);border-radius:10px;padding:14px 16px;text-decoration:none;color:inherit;margin-bottom:12px;transition:all .15s}
+  .pdf-card:hover{border-color:var(--green-500)}
+  .pdf-icon{width:36px;height:36px;border-radius:8px;background:var(--red-50);color:var(--red-500);display:inline-flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;flex-shrink:0}
+  .pdf-text{flex:1;min-width:0}
+  .pdf-text strong{font-size:14px;font-weight:600;color:var(--gray-900);display:block}
+  .pdf-text span{font-size:12px;color:var(--gray-500)}
+  .pdf-arrow{color:var(--gray-400);font-size:14px}
+
+  .compose-btn{display:flex;align-items:center;justify-content:space-between;gap:12px;background:var(--green-500);color:#fff;padding:18px 22px;border-radius:12px;text-decoration:none;font-weight:600;font-size:15px;transition:background .15s}
+  .compose-btn:hover{background:var(--green-600)}
+  .compose-btn .ico-l{display:flex;align-items:center;gap:14px}
+  .compose-btn .ico-l .icon{width:42px;height:42px;border-radius:10px;background:rgba(255,255,255,.18);display:inline-flex;align-items:center;justify-content:center;font-size:18px}
+  .compose-btn .ico-l .label{display:flex;flex-direction:column;align-items:flex-start;line-height:1.3}
+  .compose-btn .ico-l .label small{font-size:11px;font-weight:500;opacity:.85}
+
+  .activities{margin-top:20px;border-top:1px solid var(--gray-100);padding-top:18px}
+  .activities-title{font-size:10px;font-weight:700;color:var(--gray-400);letter-spacing:.7px;text-transform:uppercase;margin-bottom:14px}
+  .activity-item{display:flex;align-items:flex-start;gap:10px;font-size:13px;color:var(--gray-700);margin-bottom:10px;line-height:1.5}
+  .activity-dot{width:8px;height:8px;border-radius:50%;background:var(--green-500);margin-top:5px;flex-shrink:0}
+
+  .market-card{background:linear-gradient(135deg,#0f172a,#1e293b);color:#fff;border-radius:14px;padding:22px}
+  .market-icon-row{display:flex;align-items:center;gap:8px;margin-bottom:14px;color:var(--green-500);font-weight:600;font-size:14px}
+  .market-title{font-size:16px;font-weight:700;margin-bottom:8px}
+  .market-text{font-size:13px;color:#cbd5e1;line-height:1.55;margin-bottom:18px}
+  .market-text .up{color:var(--green-500);font-weight:700}
+  .market-text .down{color:var(--red-500);font-weight:700}
+  .market-btn{width:100%;background:rgba(255,255,255,.08);color:#fff;border:1px solid rgba(255,255,255,.12);padding:11px;border-radius:9px;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit}
+  .market-btn:hover{background:rgba(255,255,255,.16)}
+
+  /* ── Empty state ───────────────────────────────────────────────── */
+  .empty-state{background:#fff;border:1px dashed var(--gray-200);border-radius:14px;padding:48px;text-align:center;color:var(--gray-400);font-size:14px}
+
+  /* ── Toast ─────────────────────────────────────────────────────── */
+  #toast{position:fixed;bottom:24px;right:24px;background:var(--gray-900);color:#fff;padding:14px 22px;border-radius:10px;font-size:13px;font-weight:500;opacity:0;transition:all .3s;pointer-events:none;z-index:999;transform:translateY(8px);box-shadow:0 8px 24px rgba(0,0,0,.18)}
+  #toast.show{opacity:1;transform:translateY(0)}
+
+  /* ── Responsive ─────────────────────────────────────────────────── */
+  @media (max-width: 1100px){
+    .app{grid-template-columns:1fr;gap:16px;padding:16px}
+    .sidebar{position:static;display:none}
+    .topbar{padding:12px 16px;gap:14px}
+    .nav{display:none}
+  }
+</style>
+</head>
+<body>
+
+<!-- ── Top bar ─────────────────────────────────────────────── -->
+<header class="topbar">
+  <div class="brand">{{ display_name.upper() }} <span class="green">PULSE</span></div>
+  <nav class="nav">
+    <a class="nav-link active" href="#feedback">Feedback Overview</a>
+    <a class="nav-link" href="#drafts">Stakeholder Drafts</a>
+    <a class="nav-link" href="#market">Market Pulse</a>
+  </nav>
+  <div class="top-right">
+    <span class="live-badge"><span class="live-dot"></span> Live Sync Active</span>
+    <button class="icon-btn" title="Notifications">🔔</button>
+    <button class="icon-btn" title="Settings">⚙</button>
+    <button id="btn-trigger" class="btn-primary"
+            onclick="triggerPulse('{{ product_slug }}')"
+            {% if trigger_state == 'running' %}disabled{% endif %}>
+      {% if trigger_state == 'running' %}Generating…{% else %}Generate New Pulse{% endif %}
+    </button>
+    <span class="avatar">{{ primary_initial }}</span>
+  </div>
+</header>
+
+<!-- ── Main grid ────────────────────────────────────────────── -->
+<div class="app">
+
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="sidebar-brand">
+      <span class="sidebar-icon">📊</span>
+      <div class="sidebar-brand-text">
+        <strong>{{ display_name }} Pulse</strong>
+        <span>Financial Insights</span>
+      </div>
+    </div>
+    <nav class="nav-vert">
+      <a class="active" href="#"><span class="ico">📊</span> Feedback Overview</a>
+      <a href="#drafts"><span class="ico">📝</span> Stakeholder Drafts</a>
+      <a href="#market"><span class="ico">📈</span> Market Pulse</a>
+      <a href="/api/runs"><span class="ico">🗂</span> Archive</a>
+    </nav>
+    {% if gmail_url %}
+    <a class="sidebar-cta" href="{{ gmail_url }}" target="_blank">
+      <span class="red">✉</span> Compose in Gmail
+    </a>
+    {% endif %}
+    <a class="help-link" href="https://github.com/" target="_blank">❓ Help Center</a>
+  </aside>
+
+  <!-- Main -->
+  <main class="main">
+
+    <div class="page-head">
+      <div>
+        <h1 class="page-title">Intelligence Dashboard</h1>
+        <p class="page-subtitle">Aggregated stakeholder sentiment and prioritized action items.</p>
+      </div>
+      <div class="period-pill">Current Period: {{ quarter }}</div>
+    </div>
+
+    <div class="section-row" id="feedback">
+      <h2 class="section-title">Critical Feedback Themes</h2>
+      {% if urgent_count %}<span class="urgent-badge">{{ urgent_count }} Urgent Item{{ 's' if urgent_count != 1 else '' }}</span>{% endif %}
+    </div>
+
+    {% if themes %}
+      {% for theme in themes %}
+      <div class="theme-card">
+        <div class="theme-head">
+          <h3 class="theme-title">{{ theme.title }}</h3>
+          <span class="priority-pill {{ theme.priority_color_class }}">{{ theme.priority_label_uc }}</span>
+        </div>
+        {% if theme.avg_rating is not none %}
+        <div class="stars">
+          {% set full = theme.avg_rating | int %}
+          {% set half = (theme.avg_rating - full) >= 0.5 %}
+          {% for n in range(full) %}★{% endfor %}{% if half %}⯨{% endif %}{% for n in range(5 - full - (1 if half else 0)) %}<span style="color:#e5e7eb">★</span>{% endfor %}
+          <span class="rating-num">{{ theme.avg_rating }}/5</span>
+        </div>
+        {% endif %}
+        {% if theme.quotes %}
+        <div class="quote-box">{{ theme.quotes[0].text | truncate(260) }}</div>
+        {% endif %}
+        <div class="theme-foot">
+          <div class="avatar-row">
+            {% set count = theme.review_count %}
+            <span class="av">👤</span>
+            <span class="av" style="background:linear-gradient(135deg,#a78bfa,#7c3aed)">👤</span>
+            {% if count > 2 %}<span class="av gray">+{{ count - 2 }}</span>{% endif %}
+          </div>
+          <a class="review-link" href="{{ print_url }}" target="_blank">Review Details →</a>
+        </div>
+      </div>
+      {% endfor %}
+    {% else %}
+      <div class="empty-state">
+        No themes yet. Click <strong>Generate New Pulse</strong> to run the pipeline.
+      </div>
+    {% endif %}
+
+  </main>
+
+  <!-- Right panel -->
+  <aside class="right" id="drafts">
+    <div class="stake-card">
+      <h3 style="font-size:18px;font-weight:700;margin-bottom:18px;letter-spacing:-0.2px">Stakeholder Drafts</h3>
+      <div class="profile">
+        <div class="profile-avatar">{{ primary_initial }}</div>
+        <div class="profile-name">{{ primary_name }}</div>
+        <div class="profile-role">Senior Stakeholder</div>
+      </div>
+      <div class="stats-grid">
+        <div class="stat">
+          <div class="stat-label">Drafts</div>
+          <div class="stat-value">{{ stats.drafts }}</div>
+        </div>
+        <div class="stat">
+          <div class="stat-label">Pending</div>
+          <div class="stat-value {% if stats.pending %}red{% endif %}">{{ stats.pending }}</div>
+        </div>
+        <div class="stat">
+          <div class="stat-label">Pulse</div>
+          <div class="stat-value green">{{ stats.pulse }}</div>
+        </div>
+      </div>
+
+      <a class="pdf-card" href="{{ print_url }}" target="_blank">
+        <span class="pdf-icon">PDF</span>
+        <span class="pdf-text">
+          <strong>PDF Note</strong>
+          <span>Export quarterly feedback</span>
+        </span>
+        <span class="pdf-arrow">›</span>
+      </a>
+
+      {% if gmail_url %}
+      <a class="compose-btn" href="{{ gmail_url }}" target="_blank">
+        <span class="ico-l">
+          <span class="icon">✉</span>
+          <span class="label">Compose in Gmail<small>Send draft for approval</small></span>
+        </span>
+        <span>→</span>
+      </a>
+      {% endif %}
+
+      {% if activities %}
+      <div class="activities">
+        <div class="activities-title">Recent Activities</div>
+        {% for a in activities %}
+        <div class="activity-item">
+          <span class="activity-dot" style="background:{{ a.color }}"></span>
+          <span>{{ a.label }}</span>
+        </div>
+        {% endfor %}
+      </div>
+      {% endif %}
+    </div>
+
+    <div class="market-card" id="market">
+      <div class="market-icon-row">
+        <span>📈</span><span>Market Sentiment</span>
+      </div>
+      <div class="market-text">
+        Overall stakeholder perception has shifted
+        <span class="{{ sentiment.direction }}">{{ sentiment.value }} {{ sentiment.label }}</span>
+        based on the latest pulse.
+      </div>
+      <button class="market-btn" onclick="window.open('{{ print_url }}','_blank')">View Full Market Pulse</button>
+    </div>
+  </aside>
+
+</div>
+
+<div id="toast"></div>
+
+<script>
+  function showToast(msg, ms = 3500) {
+    const t = document.getElementById('toast');
+    t.textContent = msg;
+    t.classList.add('show');
+    setTimeout(() => t.classList.remove('show'), ms);
+  }
+
+  async function triggerPulse(slug) {
+    const btn = document.getElementById('btn-trigger');
+    btn.disabled = true;
+    btn.textContent = 'Generating…';
+    showToast('Pipeline started for ' + slug + '…');
+    try {
+      await fetch('/api/trigger', {
+        method: 'POST',
+        headers: {'Content-Type':'application/json'},
+        body: JSON.stringify({product: slug})
+      });
+    } catch(e) {
+      showToast('Failed to trigger: ' + e.message);
+    }
+  }
+
+  async function refreshStatus() {
+    try {
+      const res = await fetch('/api/latest?product={{ product_slug }}');
+      const p = await res.json();
+      const btn = document.getElementById('btn-trigger');
+      if (!btn) return;
+      if (p.trigger_state === 'running') {
+        btn.disabled = true;
+        btn.textContent = 'Generating…';
+      } else if (p.trigger_state === 'done') {
+        btn.disabled = false;
+        btn.textContent = 'Generate New Pulse';
+        showToast('Pulse generated! Reloading…');
+        setTimeout(() => location.reload(), 1500);
+      }
+    } catch(e) { /* silent */ }
+  }
+  setInterval(refreshStatus, 15000);
+</script>
+</body>
+</html>

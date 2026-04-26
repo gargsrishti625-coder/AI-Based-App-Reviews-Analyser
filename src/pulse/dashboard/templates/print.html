@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>{{ subject }}</title>
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:system-ui,-apple-system,sans-serif;padding:40px;color:#111;max-width:860px;margin:0 auto}
+  h1{font-size:22px;font-weight:800;color:#0a0a0a;margin-bottom:4px}
+  .run-meta{font-size:12px;color:#6b7280;margin-bottom:32px}
+  h2{font-size:14px;font-weight:700;color:#3b82f6;text-transform:uppercase;letter-spacing:.6px;margin:28px 0 12px}
+  .theme{border:1px solid #e5e7eb;border-left:4px solid #3b82f6;border-radius:8px;padding:16px;margin-bottom:20px;break-inside:avoid}
+  .theme-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:6px}
+  .theme-title{font-size:15px;font-weight:700}
+  .rating{font-size:13px;color:#374151;background:#f3f4f6;padding:2px 8px;border-radius:20px}
+  .meta{font-size:12px;color:#6b7280;margin-bottom:12px}
+  .quote{background:#f9fafb;border-left:3px solid #d1d5db;padding:10px 12px;margin-bottom:8px;font-size:13px;font-style:italic;color:#374151;line-height:1.5;border-radius:4px}
+  .actions{font-size:12px;margin-top:10px;color:#374151}
+  .actions ul{padding-left:16px;margin-top:4px}
+  .actions li{margin-bottom:2px}
+  @media print{body{padding:20px}.theme{page-break-inside:avoid}}
+</style>
+</head>
+<body>
+<h1>{{ subject }}</h1>
+<p class="run-meta">Run ID: {{ run_id }}</p>
+
+<h2>Themes</h2>
+{% for theme in themes %}
+<div class="theme">
+  <div class="theme-header">
+    <span class="theme-title">{{ theme.title }}</span>
+    {% if theme.avg_rating is not none %}
+    <span class="rating">{{ theme.avg_rating }} / 5 ★</span>
+    {% endif %}
+  </div>
+  <div class="meta">
+    {{ theme.review_count }} reviews · {{ theme.priority_label }}
+  </div>
+  <p style="font-size:13px;color:#374151;margin-bottom:10px">{{ theme.summary }}</p>
+  {% for quote in theme.quotes[:2] %}
+  <div class="quote">"{{ quote.text | truncate(280) }}"</div>
+  {% endfor %}
+  {% if theme.action_ideas %}
+  <div class="actions">
+    <strong>Action ideas:</strong>
+    <ul>{% for a in theme.action_ideas %}<li>{{ a }}</li>{% endfor %}</ul>
+  </div>
+  {% endif %}
+</div>
+{% endfor %}
+
+<script>window.onload = function(){ window.print(); }</script>
+</body>
+</html>
